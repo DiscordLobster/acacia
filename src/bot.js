@@ -21,7 +21,9 @@ client.localUsers = new Collection();
 client.settings = new Collection();
 
 // Attach properties to the collections
-//
+require('./properties/userProperties')(client.localUsers);
+require('./properties/userLevelProperties')(client.localUsers);
+require('./properties/userEconomyProperties')(client.localUsers);
 
 // Switch case and readdirSync for client functions
 const functionFolders = readdirSync('./src/functions');
