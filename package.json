@@ -1,0 +1,24 @@
+{
+  "name": "acacia",
+  "version": "1.0.0",
+  "description": "Discord bot coded with discordjs",
+  "main": "node src/bot.js",
+  "scripts": {
+    "test": "node src/bot.js"
+  },
+  "author": "Joseph Gross",
+  "license": "ISC",
+  "dependencies": {
+    "@discordjs/rest": "^1.2.0",
+    "dayjs": "^1.11.5",
+    "discord.js": "^14.5.0",
+    "dotenv": "^16.0.3",
+    "ms": "^2.1.3",
+    "mysql2": "^2.3.3",
+    "numeral": "^2.0.6",
+    "sequelize": "^6.23.2"
+  },
+  "devDependencies": {
+    "eslint": "^8.24.0"
+  }
+}
