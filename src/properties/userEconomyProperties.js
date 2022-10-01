@@ -13,7 +13,7 @@ module.exports = (collection) => {
             await BotUser.increment(['wallet', 'total'], { by: amount, where: { user_id: userId } });
             user = await collection._sync(userId);
 
-            logger.write(`[${dateFormat}] Added ${amount} to the wallet of: ${userId}`);
+            logger.write(`[${dateFormat}] Added ${amount} to the wallet of: ${userId}\n`);
 
             return user;
         },
@@ -31,7 +31,7 @@ module.exports = (collection) => {
             }, { where: { user_id: userId } }).save();
             user = await collection._sync(userId);
 
-            logger.write(`[${dateFormat}] Set user: ${userId}'s wallet to: ${amount}`);
+            logger.write(`[${dateFormat}] Set user: ${userId}'s wallet to: ${amount}\n`);
 
             return user;
         },
@@ -46,7 +46,7 @@ module.exports = (collection) => {
             await BotUser.decrement(['wallet', 'total'], { by: amount, where: { user_id: userId } });
             user = await collection._sync(userId);
 
-            logger.write(`[${dateFormat}] Removed ${amount} money from the wallet of: ${userId}`);
+            logger.write(`[${dateFormat}] Removed ${amount} money from the wallet of: ${userId}\n`);
 
             return user;
         },
@@ -61,7 +61,7 @@ module.exports = (collection) => {
             await BotUser.increment(['bank', 'total'], { by: amount, where: { user_id: userId } });
             user = await collection._sync(userId);
 
-            logger.write(`[${dateFormat}] Added ${amount} money to the bank of: ${userId}`);
+            logger.write(`[${dateFormat}] Added ${amount} money to the bank of: ${userId}\n`);
 
             return user;
         },
@@ -79,7 +79,7 @@ module.exports = (collection) => {
             }, { where: { user_id: userId } }).save();
             user = await collection._sync(userId);
 
-            logger.write(`[${dateFormat}] Set the bank of: ${userId} to ${amount}`);
+            logger.write(`[${dateFormat}] Set the bank of: ${userId} to ${amount}\n`);
 
             return user;
         },
@@ -94,7 +94,7 @@ module.exports = (collection) => {
             await BotUser.decrement(['bank', 'total'], { by: amount, where: { user_id: userId } });
             user = await collection._sync(userId);
 
-            logger.write(`[${dateFormat}] Removed ${amount} money from the bank of: ${userId}`);
+            logger.write(`[${dateFormat}] Removed ${amount} money from the bank of: ${userId}\n`);
 
             return user;
         },

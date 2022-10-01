@@ -72,7 +72,7 @@ module.exports = (collection) => {
                 xp: Math.ceil(Math.pow((user.level + amount) * 0.15, 2.4)),
             }, { where: { user_id: userId } }).save();
 
-            logger.write(`[${dateFormat}] Added ${amount} level(s) to user: ${userId}`);
+            logger.write(`[${dateFormat}] Added ${amount} level(s) to user: ${userId}\n`);
 
             const newUser = await collection._sync(userId);
 
@@ -91,7 +91,7 @@ module.exports = (collection) => {
                 xp: Math.ceil(Math.pow(amount * 0.15, 2.4)),
             }, { where: { user_id: userId } }).save();
 
-            logger.write(`[${dateFormat}] Set the level for ${userId} to ${amount}`);
+            logger.write(`[${dateFormat}] Set the level for ${userId} to ${amount}\n`);
 
             const newUser = await collection._sync(userId);
 
@@ -110,7 +110,7 @@ module.exports = (collection) => {
                 xp: Math.ceil(Math.pow((user.level - amount) * 0.15, 2.4)),
             }, { where: { user_id: userId } }).save();
 
-            logger.write(`[${dateFormat}] Removed ${amount} level(s) from user: ${userId}`);
+            logger.write(`[${dateFormat}] Removed ${amount} level(s) from user: ${userId}\n`);
 
             const newUser = await collection._sync(userId);
 

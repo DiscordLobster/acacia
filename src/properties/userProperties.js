@@ -46,7 +46,7 @@ module.exports = (collection) => {
 
             await BotUser.destroy({ where: { user_id: userId } });
 
-            userLogger.write(`[${dateFormat}] Deleted user data for ${userId}`);
+            userLogger.write(`[${dateFormat}] Deleted user data for ${userId}\n`);
 
             return check;
         },

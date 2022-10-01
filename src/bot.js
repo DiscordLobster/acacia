@@ -1,5 +1,7 @@
 const { readdirSync } = require('fs');
 const { Client, GatewayIntentBits, Collection } = require('discord.js');
+const Embeds = require('./utilities/Embeds');
+const Constants = require('./utilities/Constants');
 
 const client = new Client({
 	intents: [
@@ -18,12 +20,17 @@ client.menus = new Collection();
 client.modals = new Collection();
 
 client.localUsers = new Collection();
-client.settings = new Collection();
+client.botSettings = new Collection();
+
+client.embeds = Embeds;
+client.constants = Constants;
 
 // Attach properties to the collections
 require('./properties/userProperties')(client.localUsers);
 require('./properties/userLevelProperties')(client.localUsers);
 require('./properties/userEconomyProperties')(client.localUsers);
+
+require('./properties/settingsProperties')(client.botSettings);
 
 // Switch case and readdirSync for client functions
 const functionFolders = readdirSync('./src/functions');
