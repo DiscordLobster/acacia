@@ -25,7 +25,7 @@ module.exports = (collection) => {
             let user = await collection.fetch(userId);
             if (!user) user = await collection.add(userId);
 
-            await BotUser.update({ xp: parseInt(amount, 10), level: collection.cleanLevel(user.xp, user.level) }, { where: { user_id: userId } }).save();
+            await BotUser.update({ xp: parseInt(amount, 10), level: collection.cleanLevel(amount, user.level) }, { where: { user_id: userId } }).save();
 
             logger.write(`[${dateFormat}] Set the xp for user: ${userId} to: ${amount}`);
 
