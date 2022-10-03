@@ -10,111 +10,53 @@ module.exports = (collection) => {
             let user = await collection.fetch(userId);
             if (!user) user = await collection.add(userId);
 
-            await BotUser.update({
-                xp: parseInt(amount, 10) + user.xp,
-                level: Math.floor(0.15 * Math.pow(amount + user.xp, 1 / 2.4)),
-            }, { where: { user_id: userId } }).save();
+            await BotUser.increment(['xp'], { by: amount, where: { user_id: userId } });
+            user = await collection._sync(userId);
 
-            logger.write(`[${dateFormat}] Added ${amount} xp to user: ${userId}\n`);
+            logger.write(`[${dateFormat}] Added ${amount} xp to: ${userId}`);
 
-            const newUser = await collection._sync(userId);
-
-            return (Math.floor(0.15 * Math.pow(newUser.xp -= amount, 1 / 2.4)) > newUser.level);
+            return user;
         },
     });
 
-    Reflect.defineProperty(collection, 'setXp', {
-        value: async (userId, amount) => {
-            const dateFormat = dayjs().format('YYYY-MM-DD hh:mm:ss');
-            let user = await collection.fetch(userId);
-            if (!user) user = await collection.add(userId);
+    Reflect.defineProperty(collection, 'xpForLevel', {
+        value: (level) => {
+            const basis = 30;
+            const extra = 20;
+            const acc_a = 30;
+            const acc_b = 30;
 
-            await BotUser.update({
-                xp: parseInt(amount, 10),
-                level: Math.floor(0.15 * Math.pow(amount, 1 / 2.4)),
-            }, { where: { user_id: userId } }).save();
-
-            logger.write(`[${dateFormat}] Set xp for ${userId} to ${amount}\n`);
-
-            const newUser = await collection._sync(userId);
-
-            return newUser;
+            return Math.round(
+                (basis * Math.pow(level - 1, 0.9 + acc_a / 250) * level * (level + 1)) /
+                (6 + Math.pow(level, 2) / 50 / acc_b) +
+                (level - 1) * extra,
+            );
         },
     });
 
-    Reflect.defineProperty(collection, 'removeXp', {
-        value: async (userId, amount) => {
-            const dateFormat = dayjs().format('YYYY-MM-DD hh:mm:ss');
-            let user = await collection.fetch(userId);
-            if (!user) user = await collection.add(userId);
+    Reflect.defineProperty(collection, 'xpRequired', {
+        value: (currentXp, currentLevel) => {
+            const xpForNextLevel = collection.xpForLevel(currentLevel + 1);
+            const xpRequired = xpForNextLevel - currentXp;
 
-            await BotUser.update({
-                xp: user.xp - parseInt(amount, 10),
-                level: Math.floor(0.15 * Math.pow(user.xp - amount, 1 / 2.4)),
-            }, { where: { user_id: userId } }).save();
-
-            logger.write(`[${dateFormat}] Removed ${amount} xp from user: ${userId}\n`);
-
-            const newUser = await collection._sync(userId);
-
-            return newUser;
+            return xpRequired;
         },
     });
 
-    Reflect.defineProperty(collection, 'addLevels', {
-        value: async (userId, amount) => {
-            const dateFormat = dayjs().format('YYYY-MM-DD hh:mm:ss');
-            let user = await collection.fetch(userId);
-            if (!user) user = await collection.add(userId);
+    Reflect.defineProperty(collection, 'cleanXp', {
+        value: (currentXp, currentLevel) => {
+            const xpForNextLevel = collection.xpForLevel(currentLevel + 1);
+            const xpRequired = xpForNextLevel - currentXp;
+            const cleanXp = currentXp - xpRequired;
 
-            await BotUser.update({
-                level: user.level + parseInt(amount, 10),
-                xp: Math.ceil(Math.pow((user.level + amount) * 0.15, 2.4)),
-            }, { where: { user_id: userId } }).save();
-
-            logger.write(`[${dateFormat}] Added ${amount} level(s) to user: ${userId}\n`);
-
-            const newUser = await collection._sync(userId);
-
-            return newUser;
+            return cleanXp;
         },
     });
 
-    Reflect.defineProperty(collection, 'setLevel', {
-        value: async (userId, amount) => {
-            const dateFormat = dayjs().format('YYYY-MM-DD hh:mm:ss');
-            let user = await collection.fetch(userId);
-            if (!user) user = await collection.add(userId);
-
-            await BotUser.update({
-                level: parseInt(amount, 10),
-                xp: Math.ceil(Math.pow(amount * 0.15, 2.4)),
-            }, { where: { user_id: userId } }).save();
-
-            logger.write(`[${dateFormat}] Set the level for ${userId} to ${amount}\n`);
-
-            const newUser = await collection._sync(userId);
-
-            return newUser;
-        },
-    });
-
-    Reflect.defineProperty(collection, 'removeLevels', {
-        value: async (userId, amount) => {
-            const dateFormat = dayjs().format('YYYY-MM-DD hh:mm:ss');
-            let user = await collection.fetch(userId);
-            if (!user) user = await collection.add(userId);
-
-            await BotUser.update({
-                level: user.level - parseInt(amount, 10),
-                xp: Math.ceil(Math.pow((user.level - amount) * 0.15, 2.4)),
-            }, { where: { user_id: userId } }).save();
-
-            logger.write(`[${dateFormat}] Removed ${amount} level(s) from user: ${userId}\n`);
-
-            const newUser = await collection._sync(userId);
-
-            return newUser;
+    Reflect.defineProperty(collection, 'hasLeveledUp', {
+        value: (currentXp, currentLevel) => {
+            if (currentXp >= collection.xpForLevel(currentLevel + 1)) return true;
+            else return false;
         },
     });
 };
