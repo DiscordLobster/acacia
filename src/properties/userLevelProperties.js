@@ -73,7 +73,7 @@ module.exports = (collection) => {
 
     Reflect.defineProperty(collection, 'cleanXp', {
         value: (currentXp, currentLevel) => {
-            return currentXp - collection.xpFor(currentLevel);
+            return currentXp - collection.xpForLevel(currentLevel);
         },
     });
 
