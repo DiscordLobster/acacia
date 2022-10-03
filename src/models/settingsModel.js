@@ -34,6 +34,7 @@ module.exports = (sequelize, DataTypes) => {
             defaultValue: 'Welcome to %g, %u! We\'re happy to have you aboard! Please take the time to read our rules and check out our pavilion for more information!',
             allowNull: false,
         },
-        ignoredChannels: DataTypes.TEXT,
+        welcome_channels: DataTypes.TEXT,
+        ignored_channels: DataTypes.TEXT,
     });
 };

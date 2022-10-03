@@ -84,6 +84,84 @@ module.exports = (collection) => {
         },
     });
 
+    Reflect.defineProperty(collection, 'addWelcomeChannel', {
+        value: async (guildId, channelId) => {
+            const dateFormat = dayjs().format('YYYY-MM-DD hh:mm:ss');
+            let settings = await collection.fetch(guildId);
+            if (!settings) settings = await collection.add(guildId);
+
+            const channels = settings.welcome_channels.split(',');
+            channels.push(channelId);
+
+            await BotSettings.update({
+                welcome_channels: channels.join(),
+            }, { where: { guild_id: guildId } });
+
+            logger.write(`[${dateFormat}] Added a new welcome channel: ${channelId} to: ${guildId}`);
+
+            return await collection._sync(guildId);
+        },
+    });
+
+    Reflect.defineProperty(collection, 'removeWelcomeChannel', {
+        value: async (guildId, channelId) => {
+            const dateFormat = dayjs().format('YYYY-MM-DD hh:mm:ss');
+            let settings = await collection.fetch(guildId);
+            if (!settings) settings = await collection.add(guildId);
+
+            let channels = settings.welcome_channels.split(',');
+            if (!channels.find(channelId)) return new Error('No channel with this id was found!');
+            channels = channels.filter(key => key !== channelId);
+
+            await BotSettings.update({
+                welcome_channels: channels.join(),
+            }, { where: { guild_id: guildId } });
+
+            logger.write(`[${dateFormat}] Removed a welcome channel: ${channelId} from: ${guildId}`);
+
+            return await collection._sync(guildId);
+        },
+    });
+
+    Reflect.defineProperty(collection, 'addIgnoredChannel', {
+        value: async (guildId, channelId) => {
+            const dateFormat = dayjs().format('YYYY-MM-DD hh:mm:ss');
+            let settings = await collection.fetch(guildId);
+            if (!settings) settings = await collection.add(guildId);
+
+            const channels = settings.ignored_channels.split(',');
+            channels.push(channelId);
+
+            await BotSettings.update({
+                ignored_channels: channels.join(),
+            }, { where: { guild_id: guildId } });
+
+            logger.write(`[${dateFormat}] Added a new ignored channel: ${channelId} to: ${guildId}`);
+
+            return await collection._sync(guildId);
+        },
+    });
+
+    Reflect.defineProperty(collection, 'removeIgnoredChannel', {
+        value: async (guildId, channelId) => {
+            const dateFormat = dayjs().format('YYYY-MM-DD hh:mm:ss');
+            let settings = await collection.fetch(guildId);
+            if (!settings) settings = await collection.add(guildId);
+
+            let channels = settings.ignored_channels.split(',');
+            if (!channels.find(channelId)) return new Error('No channel with this id was found!');
+            channels = channels.filter(key => key !== channelId);
+
+            await BotSettings.update({
+                ignored_channels: channels.join(),
+            }, { where: { guild_id: guildId } });
+
+            logger.write(`[${dateFormat}] Removed an ignored channel: ${channelId} from: ${guildId}`);
+
+            return await collection._sync(guildId);
+        },
+    });
+
     Reflect.defineProperty(collection, 'fetch', {
         value: async (guildId) => {
             const cacheSettings = collection.get(guildId);
