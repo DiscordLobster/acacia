@@ -21,6 +21,7 @@ client.modals = new Collection();
 
 client.localUsers = new Collection();
 client.botSettings = new Collection();
+client.questions = new Collection();
 
 client.embeds = Embeds;
 client.constants = Constants;
@@ -31,6 +32,8 @@ require('./properties/userLevelProperties')(client.localUsers);
 require('./properties/userEconomyProperties')(client.localUsers);
 
 require('./properties/settingsProperties')(client.botSettings);
+
+require('./properties/questionProperties')(client.questions);
 
 // Switch case and readdirSync for client functions
 const functionFolders = readdirSync('./src/functions');
@@ -56,4 +59,5 @@ client.login(process.env.BOT_TOKEN);
 
 async () => {
 	await client.settings.syncAll();
+	await client.questions.syncAll();
 };

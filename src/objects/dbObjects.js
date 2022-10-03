@@ -13,6 +13,8 @@ const sequelize = new Sequelize({
 
 const BotUser = require('../models/userModel')(sequelize, Sequelize.DataTypes);
 const BotSettings = require('../models/settingsModel')(sequelize, Sequelize.DataTypes);
+const LevelRoles = require('../models/levelRoleModel')(sequelize, Sequelize.DataTypes);
+const Questions = require('../models/quizModel')(sequelize, Sequelize.DataTypes);
 
 // Create any associations
 //
@@ -23,4 +25,6 @@ const BotSettings = require('../models/settingsModel')(sequelize, Sequelize.Data
 module.exports = {
     BotUser,
     BotSettings,
+    LevelRoles,
+    Questions,
 };
