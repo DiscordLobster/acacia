@@ -19,6 +19,37 @@ module.exports = (collection) => {
         },
     });
 
+    Reflect.defineProperty(collection, 'setXp', {
+        value: async (userId, amount) => {
+            const dateFormat = dayjs().format('YYYY-MM-DD hh:mm:ss');
+            let user = await collection.fetch(userId);
+            if (!user) user = await collection.add(userId);
+
+            await BotUser.update({ xp: parseInt(amount, 10), level: collection.cleanLevel(user.xp, user.level) }, { where: { user_id: userId } }).save();
+
+            logger.write(`[${dateFormat}] Set the xp for user: ${userId} to: ${amount}`);
+
+            return collection._sync(userId);
+        },
+    });
+
+    Reflect.defineProperty(collection, 'removeXp', {
+        value: async (userId, amount) => {
+            const dateFormat = dayjs().format('YYYY-MM-DD hh:mm:ss');
+            let user = await collection.fetch(userId);
+            if (!user) user = await collection.add(userId);
+
+            await BotUser.update({
+                xp: user.xp - amount,
+                level: collection.cleanLevel(user.xp - amount, user.level),
+            }, { where: { user_id: userId } }).save();
+
+            logger.write(`[${dateFormat}] Removed ${amount} xp from: ${userId}`);
+
+            return collection._sync(userId);
+        },
+    });
+
     Reflect.defineProperty(collection, 'xpForLevel', {
         value: (level) => {
             const basis = 30;
@@ -36,20 +67,13 @@ module.exports = (collection) => {
 
     Reflect.defineProperty(collection, 'xpRequired', {
         value: (currentXp, currentLevel) => {
-            const xpForNextLevel = collection.xpForLevel(currentLevel + 1);
-            const xpRequired = xpForNextLevel - currentXp;
-
-            return xpRequired;
+            return collection.xpForLevel(currentLevel + 1) - currentXp;
         },
     });
 
     Reflect.defineProperty(collection, 'cleanXp', {
         value: (currentXp, currentLevel) => {
-            const xpForNextLevel = collection.xpForLevel(currentLevel + 1);
-            const xpRequired = xpForNextLevel - currentXp;
-            const cleanXp = currentXp - xpRequired;
-
-            return cleanXp;
+            return currentXp - collection.xpFor(currentLevel);
         },
     });
 
@@ -57,6 +81,24 @@ module.exports = (collection) => {
         value: (currentXp, currentLevel) => {
             if (currentXp >= collection.xpForLevel(currentLevel + 1)) return true;
             else return false;
+        },
+    });
+
+    Reflect.defineProperty(collection, 'cleanLevel', {
+        value: (currentXp, currentLevel) => {
+            if (currentXp < collection.xpForLevel(currentLevel)) {
+                let level = currentLevel;
+
+                do {
+                    level--;
+                }
+                while (currentXp < collection.xpForLevel(level));
+
+                return level;
+            }
+            else {
+                return currentLevel;
+            }
         },
     });
 };
