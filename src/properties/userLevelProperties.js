@@ -13,7 +13,19 @@ module.exports = (collection) => {
             await BotUser.increment(['xp'], { by: amount, where: { user_id: userId } });
             user = await collection._sync(userId);
 
-            logger.write(`[${dateFormat}] Added ${amount} xp to: ${userId}`);
+            logger.write(`[${dateFormat}] Added ${amount} xp to: ${userId}\n`);
+
+            return user;
+        },
+    });
+
+    Reflect.defineProperty(collection, 'incrementLevel', {
+        value: async (userId) => {
+            let user = await collection.fetch(userId);
+            if (!user) user = await collection.add(userId);
+
+            await BotUser.increment(['level'], { by: 1, where: { user_id: userId } });
+            user = await collection._sync(userId);
 
             return user;
         },
@@ -27,7 +39,7 @@ module.exports = (collection) => {
 
             await BotUser.update({ xp: parseInt(amount, 10), level: collection.cleanLevel(amount, user.level) }, { where: { user_id: userId } }).save();
 
-            logger.write(`[${dateFormat}] Set the xp for user: ${userId} to: ${amount}`);
+            logger.write(`[${dateFormat}] Set the xp for user: ${userId} to: ${amount}\n`);
 
             return collection._sync(userId);
         },
@@ -44,7 +56,7 @@ module.exports = (collection) => {
                 level: collection.cleanLevel(user.xp - amount, user.level),
             }, { where: { user_id: userId } }).save();
 
-            logger.write(`[${dateFormat}] Removed ${amount} xp from: ${userId}`);
+            logger.write(`[${dateFormat}] Removed ${amount} xp from: ${userId}\n`);
 
             return collection._sync(userId);
         },

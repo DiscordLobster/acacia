@@ -19,17 +19,15 @@ module.exports = (collection) => {
     Reflect.defineProperty(collection, 'add', {
         value: async (userId) => {
             const dateFormat = dayjs().format('YYYY-MM-DD hh:mm:ss');
-            const check = collection.fetch(userId);
-            if (check) return check;
+            let user = collection.get(userId) || await BotUser.findOne({ where: { user_id: userId } });
+            if (user) return user;
 
-            const newUser = await BotUser.create({
-                user_id: userId,
-            });
-            collection.set(userId, newUser);
-            userLogger.write(`[${dateFormat}] Created user data for ${userId}\n`);
-            if (collection.size > process.env.USER_CACHE_LIMIT) collection.clean(6);
+            await BotUser.create({ user_id: userId });
+            user = await collection._sync(userId);
 
-            return newUser;
+            userLogger.write(`[${dateFormat}] Added new user data for: ${userId}\n`);
+
+            return user;
         },
     });
 
