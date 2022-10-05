@@ -22,7 +22,7 @@ module.exports = {
     const b2 = new ButtonBuilder()
       .setCustomId('settings-remove-ignored')
       .setLabel('Remove Ignored')
-      .setDisabled(true)
+      .setDisabled(false)
       .setStyle(ButtonStyle.Danger);
 
     const b3 = new ButtonBuilder()
