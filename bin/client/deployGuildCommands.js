@@ -22,13 +22,11 @@ for (const folder of commandFolders) {
 
 const rest = new REST({ version: '10' }).setToken(process.env.BOT_TOKEN);
 
-async () => {
     try {
         console.log('Attempting to deploy guild commands...');
-        await rest.put(Routes.applicationGuildCommands(applicationId, guildId), { body: commandArray });
+        rest.put(Routes.applicationGuildCommands(applicationId, guildId), { body: commandArray });
         console.log(`Successfully deployed ${commandArray.length} commands!`);
     }
     catch (err) {
         console.error(err);
     }
-};

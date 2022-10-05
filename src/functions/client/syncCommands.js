@@ -12,7 +12,7 @@ module.exports = (client) => {
             for (const file of commandFiles) {
                 const command = require(`../../commands/${folder}/${file}`);
                 commands.set(command.data.name, command);
-                console.log('Successfully synced: %d to local cache', command.data.name);
+                console.log('Successfully synced: %s to local cache', command.data.name);
             }
         }
 
