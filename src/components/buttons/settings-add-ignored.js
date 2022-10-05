@@ -18,7 +18,7 @@ module.exports = {
     const ti1 = new TextInputBuilder()
       .setCustomId('ti1')
       .setLabel('Channel ID')
-      .setPlaceholder('Enter a valid channel id')
+      .setPlaceholder('Please enter a valid channel ID')
       .setStyle(TextInputStyle.Short);
 
     const row = new ActionRowBuilder().setComponents(ti1);
