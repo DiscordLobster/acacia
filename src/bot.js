@@ -54,6 +54,7 @@ for (const folder of functionFolders) {
 }
 
 client.syncCommands();
+client.syncComponents();
 client.handleEvents();
 client.login(process.env.BOT_TOKEN);
 
