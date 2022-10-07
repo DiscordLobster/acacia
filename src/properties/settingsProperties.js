@@ -90,8 +90,20 @@ module.exports = (collection) => {
             let settings = await collection.fetch(guildId);
             if (!settings) settings = await collection.add(guildId);
 
-            const channels = settings.welcome_channels.split(',');
-            channels.push(channelId);
+            let channels = settings.welcome_channels;
+            if (channels === null) {
+                await BotSettings.update({
+                    welcome_channels: channelId,
+                }, { where: { guild_id: guildId } });
+
+                logger.write(`[${dateFormat}] Added a new welcome channel: ${channelId} to: ${guildId}`);
+
+                return await collection._sync(guildId);
+            }
+            else {
+                channels = channels.split(',');
+                channels.push(channelId);
+            }
 
             await BotSettings.update({
                 welcome_channels: channels.join(),
@@ -129,8 +141,20 @@ module.exports = (collection) => {
             let settings = await collection.fetch(guildId);
             if (!settings) settings = await collection.add(guildId);
 
-            const channels = settings.ignored_channels.split(',');
-            channels.push(channelId);
+            let channels = settings.ignored_channels;
+            if (channels === null) {
+                await BotSettings.update({
+                    ignored_channels: channelId,
+                }, { where: { guild_id: guildId } });
+
+                logger.write(`[${dateFormat}] Added a new ignored channel: ${channelId} to: ${guildId}`);
+
+                return await collection._sync(guildId);
+            }
+            else {
+                channels = channels.split(',');
+                channels.push(channelId);
+            }
 
             await BotSettings.update({
                 ignored_channels: channels.join(),
