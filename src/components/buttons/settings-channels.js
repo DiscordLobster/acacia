@@ -16,19 +16,16 @@ module.exports = {
     const b1 = new ButtonBuilder()
       .setCustomId('settings-add-ignored')
       .setLabel('Add Ignored')
-      .setDisabled(false)
       .setStyle(ButtonStyle.Primary);
 
     const b2 = new ButtonBuilder()
       .setCustomId('settings-remove-ignored')
       .setLabel('Remove Ignored')
-      .setDisabled(false)
       .setStyle(ButtonStyle.Danger);
 
     const b3 = new ButtonBuilder()
       .setCustomId('settings-add-welcome')
       .setLabel('Add Welcome')
-      .setDisabled(true)
       .setStyle(ButtonStyle.Primary);
 
     const b4 = new ButtonBuilder()
@@ -41,6 +38,7 @@ module.exports = {
     const row2 = new ActionRowBuilder().setComponents(b3, b4);
 
     const newEmbed = new EmbedBuilder()
+      .setTitle('Settings | Channels')
       .setAuthor(embed.author)
       .setColor(embed.color)
       .setFooter(embed.footer)

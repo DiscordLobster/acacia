@@ -9,6 +9,7 @@ const {
 const { version } = require('../../../package.json');
 
 module.exports = {
+  category: 'Administration',
   data: new SlashCommandBuilder()
     .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
     .setName('settings')
@@ -24,7 +25,6 @@ module.exports = {
     const b2 = new ButtonBuilder()
       .setCustomId('settings-leveling')
       .setLabel('Leveling')
-      .setDisabled(true)
       .setStyle(ButtonStyle.Primary);
 
     const b3 = new ButtonBuilder()
@@ -36,6 +36,7 @@ module.exports = {
     const row = new ActionRowBuilder().setComponents(b1, b2, b3);
 
     const embed = new EmbedBuilder()
+      .setTitle('Settings')
       .setAuthor({ name: interaction.user.tag, iconURL: interaction.member.displayAvatarURL(true) })
       .setColor(clientMember.displayColor)
       .setFooter({ text: `v${version}` })
