@@ -43,7 +43,7 @@ module.exports = (collection) => {
             await BotSettings.update({
                 xp_min: parseInt(min, 10),
                 xp_max: parseInt(max, 10),
-            }, { where: { guild_id: guildId } }).save();
+            }, { where: { guild_id: guildId } });
 
             logger.write(`[${dateFormat}] Set the xp rate for ${guildId} to ${min} - ${max}\n`);
 
@@ -60,7 +60,7 @@ module.exports = (collection) => {
             await BotSettings.update({
                 money_min: parseInt(min, 10),
                 money_max: parseInt(max, 10),
-            }, { where: { guild_id: guildId } }).save();
+            }, { where: { guild_id: guildId } });
 
             logger.write(`[${dateFormat}] Set the money rate for ${guildId} to ${min} - ${max}`);
 
@@ -76,7 +76,7 @@ module.exports = (collection) => {
 
             await BotSettings.update({
                 lvl_up_msg: message,
-            }, { where: { guild_id: guildId } }).save();
+            }, { where: { guild_id: guildId } });
 
             logger.write(`[${dateFormat}] Changed the level up message for ${guildId} from: "${settings.lvl_up_msg}" to: "${message}"`);
 
