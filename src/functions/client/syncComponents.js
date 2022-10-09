@@ -14,24 +14,24 @@ module.exports = (client) => {
           for (const file of componentFiles) {
             const button = require(`../../components/${folder}/${file}`);
             buttons.set(button.data.name, button);
-            console.log('Synced "%s" to button cache', button.data.name);
           }
+          console.log(`Synced ${buttons.size} buttons`);
           break;
 
         case 'menus':
           for (const file of componentFiles) {
             const menu = require(`../../components/${folder}/${file}`);
             menus.set(menu.data.name, menu);
-            console.log('Synced "%s" to menu cache', menu.data.name);
           }
+          console.log(`Synced ${menus.size} select menus`);
           break;
 
         case 'modals':
           for (const file of componentFiles) {
             const modal = require(`../../components/${folder}/${file}`);
             modals.set(modal.data.name, modal);
-            console.log('Synced "%s" to modal cache', modal.data.name);
           }
+          console.log(`Synced ${modals.size} modals`);
           break;
 
         default:
