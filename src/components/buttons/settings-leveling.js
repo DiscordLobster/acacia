@@ -31,7 +31,7 @@ module.exports = {
       .setStyle(ButtonStyle.Primary);
 
     const b4 = new ButtonBuilder()
-      .setCustomId('settings-lvl-formula')
+      .setCustomId('settings-level-formula')
       .setLabel('Level Formula')
       .setDisabled(true)
       .setStyle(ButtonStyle.Primary);
