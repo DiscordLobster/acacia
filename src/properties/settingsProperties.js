@@ -28,7 +28,7 @@ module.exports = (collection) => {
             await BotSettings.destroy({ where: { guild_id: guildId } });
             collection.delete(guildId);
 
-            logger.write(`[${dateFormat}] Removed settings data for guild: ${guildId}\n`);
+            logger.write(`[${dateFormat}] Removed settings data for guild\n`);
 
             return settings;
         },
@@ -45,7 +45,7 @@ module.exports = (collection) => {
                 xp_max: parseInt(max, 10),
             }, { where: { guild_id: guildId } });
 
-            logger.write(`[${dateFormat}] Set the xp rate for ${guildId} to ${min} - ${max}\n`);
+            logger.write(`[${dateFormat}] Set the xp rate from ${settings.xp_min} - ${settings.xp_max} to: ${min} - ${max}\n`);
 
             return await collection._sync(guildId);
         },
@@ -62,7 +62,7 @@ module.exports = (collection) => {
                 money_max: parseInt(max, 10),
             }, { where: { guild_id: guildId } });
 
-            logger.write(`[${dateFormat}] Set the money rate for ${guildId} to ${min} - ${max}`);
+            logger.write(`[${dateFormat}] Set the money rate from: ${settings.money_min} - ${settings.money_max} to: ${min} - ${max}\n`);
 
             return await collection._sync(guildId);
         },
@@ -78,7 +78,23 @@ module.exports = (collection) => {
                 lvl_up_msg: message,
             }, { where: { guild_id: guildId } });
 
-            logger.write(`[${dateFormat}] Changed the level up message for ${guildId} from: "${settings.lvl_up_msg}" to: "${message}"`);
+            logger.write(`[${dateFormat}] Changed the level up message from: "${settings.lvl_up_msg}" to: "${message}"\n`);
+
+            return await collection._sync(guildId);
+        },
+    });
+
+    Reflect.defineProperty(collection, 'setMoneyName', {
+        value: async (guildId, input) => {
+            const dateFormat = dayjs().format('YYYY-MM-DD hh:mm:ss');
+            let settings = await collection.fetch(guildId);
+            if (!settings) settings = await collection.add(guildId);
+
+            await BotSettings.update({
+                currency_name: input,
+            }, { where: { guild_id: guildId } });
+
+            logger.write(`[${dateFormat}] Changed the currency name from: ${settings.currency_name} to: ${input}\n`);
 
             return await collection._sync(guildId);
         },
@@ -96,7 +112,7 @@ module.exports = (collection) => {
                     welcome_channels: channelId,
                 }, { where: { guild_id: guildId } });
 
-                logger.write(`[${dateFormat}] Added a new welcome channel: ${channelId} to: ${guildId}`);
+                logger.write(`[${dateFormat}] Added a new welcome channel: ${channelId}\n`);
 
                 return await collection._sync(guildId);
             }
@@ -109,7 +125,7 @@ module.exports = (collection) => {
                 welcome_channels: channels.join(),
             }, { where: { guild_id: guildId } });
 
-            logger.write(`[${dateFormat}] Added a new welcome channel: ${channelId} to: ${guildId}`);
+            logger.write(`[${dateFormat}] Added a new welcome channel: ${channelId}\n`);
 
             return await collection._sync(guildId);
         },
@@ -129,7 +145,7 @@ module.exports = (collection) => {
                 welcome_channels: channels.join(),
             }, { where: { guild_id: guildId } });
 
-            logger.write(`[${dateFormat}] Removed a welcome channel: ${channelId} from: ${guildId}`);
+            logger.write(`[${dateFormat}] Removed a welcome channel: ${channelId}\n`);
 
             return await collection._sync(guildId);
         },
@@ -147,7 +163,7 @@ module.exports = (collection) => {
                     ignored_channels: channelId,
                 }, { where: { guild_id: guildId } });
 
-                logger.write(`[${dateFormat}] Added a new ignored channel: ${channelId} to: ${guildId}`);
+                logger.write(`[${dateFormat}] Added a new ignored channel: ${channelId}\n`);
 
                 return await collection._sync(guildId);
             }
@@ -160,7 +176,7 @@ module.exports = (collection) => {
                 ignored_channels: channels.join(),
             }, { where: { guild_id: guildId } });
 
-            logger.write(`[${dateFormat}] Added a new ignored channel: ${channelId} to: ${guildId}`);
+            logger.write(`[${dateFormat}] Added a new ignored channel: ${channelId}\n`);
 
             return await collection._sync(guildId);
         },
@@ -180,7 +196,7 @@ module.exports = (collection) => {
                 ignored_channels: channels.join(),
             }, { where: { guild_id: guildId } });
 
-            logger.write(`[${dateFormat}] Removed an ignored channel: ${channelId} from: ${guildId}`);
+            logger.write(`[${dateFormat}] Removed an ignored channel: ${channelId}\n`);
 
             return await collection._sync(guildId);
         },
