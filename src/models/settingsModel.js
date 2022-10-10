@@ -24,6 +24,10 @@ module.exports = (sequelize, DataTypes) => {
             defaultValue: 1,
             allowNull: false,
         },
+        currency_name: {
+            type: DataTypes.STRING,
+            defaultValue: '<:cc_mushie:1021639451539161138>',
+        },
         lvl_up_msg: {
             type: DataTypes.TEXT,
             defaultValue: 'Congratulations! You\'ve leveled up to level %l! Keep on chatting to earn more experience!',
