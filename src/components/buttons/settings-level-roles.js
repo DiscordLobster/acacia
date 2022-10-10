@@ -28,6 +28,7 @@ module.exports = {
     const row = new ActionRowBuilder().setComponents(b1, b2);
 
     const newEmbed = new EmbedBuilder()
+      .setTitle('Settings | Level Roles')
       .setAuthor(embed.author)
       .setColor(embed.color)
       .setFooter(embed.footer)
