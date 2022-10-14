@@ -10,7 +10,7 @@ const { version } = require('../../../package.json');
 
 module.exports = {
   category: 'General',
-  args: '<(command)>',
+  args: '(command)',
   data: new SlashCommandBuilder()
     .setName('help')
     .setDescription('View a list of all commands or view in depth information about a single command')
@@ -50,10 +50,11 @@ module.exports = {
     const embed = new EmbedBuilder()
       .setAuthor({ name: client.user.tag, iconURL: client.user.displayAvatarURL(true) })
       .setColor(clientMember.displayColor)
-      .setFooter({ text: `v${version}` })
+      .setFooter({ text: `v${version} | () = Optional - <> = Required - @ = User - # = Channel - @& = Role` })
       .setDescription('Use the buttons below to cycle through all the commands available to you. Please note ' +
         'that some buttons may be disabled for you due to being locked behind permissions. You can dismiss this ' +
-        'message at any time to end the command');
+        'message at any time to end the command.\n\nThere\'s a legend below that explains what the options are ' +
+        'wrapped with. If you have any questions please reach out to the developer or bot support for help.');
 
     await interaction.reply({ embeds: [embed], components: [row], ephemeral: true });
   },
