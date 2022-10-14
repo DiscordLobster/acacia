@@ -15,6 +15,7 @@ module.exports = {
     const embed = await interaction.message.embeds[0];
 
     const newEmbed = new EmbedBuilder()
+      .setTitle('Help | Economy')
       .setAuthor(embed.author)
       .setColor(embed.color)
       .setFooter(embed.footer)
