@@ -5,6 +5,7 @@ const {
 
 module.exports = {
   category: 'Leveling',
+  args: '(@user)',
   data: new SlashCommandBuilder()
     .setName('level')
     .setDescription('View your or another user\'s level')
