@@ -25,7 +25,7 @@ module.exports = {
       .setFooter(embed.footer)
       .setTitle(embed.title);
 
-      if (embed.image) newEmbed.setImage(embed.image);
+      if (cachedEmbed.image) newEmbed.setImage(cachedEmbed.image);
 
     await interaction.update({ embeds: [newEmbed] });
   },

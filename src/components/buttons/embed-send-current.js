@@ -28,7 +28,7 @@ module.exports = {
     }
     if (embed.image !== undefined) newEmbed.setImage(embed.image);
 
-    client.embedCache.delete(interaction.member.id);
+    await client.embedCache.delete(interaction.member.id);
 
     await interaction.update({ content: 'Successfully sent embed', embeds: [], components: [] });
 

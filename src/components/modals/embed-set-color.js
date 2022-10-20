@@ -14,17 +14,17 @@ module.exports = {
     let green = interaction.fields.getTextInputValue('ti2');
     let blue = interaction.fields.getTextInputValue('ti3');
 
-    if (isNaN(parseInt(red))) await interaction.followUp({ embeds: [client.embeds.errEmbed('Invalid number provided for red')], ephemeral: true });
-    if (isNaN(parseInt(green))) await interaction.followUp({ embeds: [client.embeds.errEmbed('Invalid number provided for green')], ephemeral: true });
-    if (isNaN(parseInt(blue))) await interaction.followUp({ embeds: [client.embeds.errEmbed('Invalid number provided for blue')], ephemeral: true });
+    if (isNaN(parseInt(red))) return interaction.reply({ embeds: [client.embeds.errEmbed('Invalid number provided for red')], ephemeral: true });
+    if (isNaN(parseInt(green))) return interaction.reply({ embeds: [client.embeds.errEmbed('Invalid number provided for green')], ephemeral: true });
+    if (isNaN(parseInt(blue))) return interaction.reply({ embeds: [client.embeds.errEmbed('Invalid number provided for blue')], ephemeral: true });
 
     red = parseInt(red, 10);
     green = parseInt(green, 10);
     blue = parseInt(blue, 10);
 
-    if (red > 255) await interaction.followUp({ embeds: [client.embeds.errEmbed('Red can not be greater than 255')], ephemeral: true });
-    if (green > 255) await interaction.followUp({ embeds: [client.embeds.errEmbed('Green can not be greater than 255')], ephemeral: true });
-    if (blue > 255) await interaction.followUp({ embeds: [client.embeds.errEmbed('Blue can not be greater than 255')], ephemeral: true });
+    if (red > 255) return interaction.reply({ embeds: [client.embeds.errEmbed('Red can not be greater than 255')], ephemeral: true });
+    if (green > 255) return interaction.reply({ embeds: [client.embeds.errEmbed('Green can not be greater than 255')], ephemeral: true });
+    if (blue > 255) return interaction.reply({ embeds: [client.embeds.errEmbed('Blue can not be greater than 255')], ephemeral: true });
 
     let cachedEmbed = embedCache.get(interaction.member.id);
     if (!cachedEmbed) {
@@ -39,7 +39,7 @@ module.exports = {
       .setFooter(embed.footer)
       .setTitle(embed.title);
 
-      if (embed.image) newEmbed.setImage(embed.image);
+      if (cachedEmbed.image) newEmbed.setImage(cachedEmbed.image);
 
     await interaction.update({ embeds: [newEmbed] });
   },
