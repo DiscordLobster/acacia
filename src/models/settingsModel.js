@@ -26,7 +26,7 @@ module.exports = (sequelize, DataTypes) => {
         },
         currency_name: {
             type: DataTypes.STRING,
-            defaultValue: '<:cc_mushie:1021639451539161138>',
+            defaultValue: '<:f8_crystalcoin_NF2U:1030251437541822555>',
         },
         lvl_up_msg: {
             type: DataTypes.TEXT,
