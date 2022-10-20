@@ -23,6 +23,8 @@ client.localUsers = new Collection();
 client.botSettings = new Collection();
 client.questions = new Collection();
 
+client.embedCache = new Collection();
+
 client.embeds = Embeds;
 client.constants = Constants;
 
