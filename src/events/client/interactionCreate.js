@@ -62,5 +62,18 @@ module.exports = {
                 return interaction.update({ content: `${err}` });
             }
         }
+        else if (interaction.isContextMenuCommand()) {
+            const contextCommand = commands.get(commandName);
+            if (!contextCommand) return interaction.reply({ content: 'No code was found for this command!', ephemeral: true });
+
+            try {
+                await contextCommand.execute(interaction, client);
+                cmdLogger.write(`${interaction.user.tag} used context command: ${commandName}\n`);
+            }
+            catch (err) {
+                console.error(err);
+                return interaction.reply({ content: `${err}`, ephemeral: true });
+            }
+        }
     },
 };
