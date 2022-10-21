@@ -6,7 +6,7 @@ module.exports = {
     async execute(message, client) {
         if (message.author.bot) return;
 
-        const { localUsers, botSettings } = client;
+        const { localUsers, botSettings, levelRoles } = client;
 
         let settings = await botSettings.fetch(message.channel.guild.id);
         if (!settings) settings = await botSettings.add(message.channel.guild.id);
@@ -26,6 +26,21 @@ module.exports = {
                     .setFooter({ text: `${localUsers.xpRequired(user.xp, user.level)} xp required for the next level` });
 
                 await message.reply({ content: `${message.author}`, embeds: [embed] });
+
+                const giveLevelRole = await levelRoles.fetch(message.guild.id, user.level);
+                if (giveLevelRole) {
+                    try {
+                        const role = await message.guild.roles.fetch(giveLevelRole.role_id);
+                        if (!role) return;
+                        await message.member.roles.add(role, 'Level Role');
+                    }
+                    catch {
+                        return;
+                    }
+                }
+                else if (!giveLevelRole) {
+                    return;
+                }
             }
         }
 
