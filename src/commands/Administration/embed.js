@@ -35,11 +35,26 @@ module.exports = {
       .setStyle(ButtonStyle.Primary);
 
     const b6 = new ButtonBuilder()
+      .setCustomId('embed-add-inline-field')
+      .setLabel('Add Inline Field')
+      .setStyle(ButtonStyle.Primary);
+
+    const b7 = new ButtonBuilder()
+      .setCustomId('embed-add-field')
+      .setLabel('Add Regular Field')
+      .setStyle(ButtonStyle.Primary);
+
+    const b8 = new ButtonBuilder()
+      .setCustomId('embed-remove-last-field')
+      .setLabel('Remove Last Field')
+      .setStyle(ButtonStyle.Danger);
+
+    const b9 = new ButtonBuilder()
       .setCustomId('embed-send-current')
       .setLabel('Send In Current Channel')
       .setStyle(ButtonStyle.Success);
 
-    const b7 = new ButtonBuilder()
+    const b10 = new ButtonBuilder()
       .setCustomId('embed-send-channel')
       .setLabel('Send In Different Channel')
       .setStyle(ButtonStyle.Success);
@@ -48,7 +63,10 @@ module.exports = {
       .setComponents(b1, b2, b3, b4, b5);
 
     const row2 = new ActionRowBuilder()
-      .setComponents(b6, b7);
+      .setComponents(b6, b7, b8);
+
+    const row3 = new ActionRowBuilder()
+      .setComponents(b9, b10);
 
     const embed = new EmbedBuilder()
       .setColor(clientMember.displayColor)
@@ -56,6 +74,6 @@ module.exports = {
       .setTitle('This is a test title!')
       .setFooter({ text: 'This is a test footer! It can\'t exceed more than 2048 characters in length! I will disappear when you edit or send me in a channel!' });
 
-    await interaction.reply({ embeds: [embed], components: [row1, row2], ephemeral: true });
+    await interaction.reply({ embeds: [embed], components: [row1, row2, row3], ephemeral: true });
   },
 };
