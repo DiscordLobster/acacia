@@ -23,6 +23,8 @@ module.exports = {
       .setDescription(`**Current Level:** ${lvlUser.level}\n**Total XP:** ${lvlUser.xp}`)
       .setFooter({ text: `${client.localUsers.xpRequired(lvlUser.xp, lvlUser.level)} xp required for next level` });
 
-    return interaction.reply({ embeds: [embed] });
+    await interaction.reply({ embeds: [embed], fetchReply: true })
+      .then(msg => setTimeout(() => msg.delete(), 10000))
+      .catch(err => console.error(err));
   },
 };
