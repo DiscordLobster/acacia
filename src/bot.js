@@ -22,6 +22,7 @@ client.modals = new Collection();
 client.localUsers = new Collection();
 client.botSettings = new Collection();
 client.questions = new Collection();
+client.levelRoles = new Collection();
 
 client.embedCache = new Collection();
 
@@ -36,6 +37,8 @@ require('./properties/userEconomyProperties')(client.localUsers);
 require('./properties/settingsProperties')(client.botSettings);
 
 require('./properties/questionProperties')(client.questions);
+
+require('./properties/levelRoleProperties')(client.levelRoles);
 
 // Switch case and readdirSync for client functions
 const functionFolders = readdirSync('./src/functions');
