@@ -19,12 +19,14 @@ module.exports = {
     const b1 = new ButtonBuilder()
       .setCustomId('create-agree')
       .setLabel('Agree & Create')
-      .setStyle(ButtonStyle.Success);
+      .setStyle(ButtonStyle.Success)
+      .setDisabled(true);
 
     const b2 = new ButtonBuilder()
       .setCustomId('create-disagree')
       .setLabel('Disagree')
-      .setStyle(ButtonStyle.Danger);
+      .setStyle(ButtonStyle.Danger)
+      .setDisabled(true);
 
     const row = new ActionRowBuilder().setComponents(b1, b2);
 
