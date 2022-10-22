@@ -39,4 +39,17 @@ module.exports = (collection) => {
       }
     },
   });
+
+  Reflect.defineProperty(collection, 'fetchAll', {
+    value: async () => {
+      const queriedLevels = await LevelRoles.findAll({ order: [['level', 'DESC']] });
+      if (queriedLevels.length < 1) return false;
+
+      queriedLevels.forEach(key => collection.set(key.level, key));
+
+      console.log('Logged %d level roles to local cache.', collection.size);
+
+      return collection;
+    },
+  });
 };

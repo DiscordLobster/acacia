@@ -23,7 +23,10 @@ module.exports = {
       .setLabel('Remove Role')
       .setStyle(ButtonStyle.Danger);
 
-    // Fetch level roles
+    const array = [];
+
+    const roles = await client.levelRoles.fetchAll();
+    if (roles.size > 0) await roles.forEach(key => array.push(`Level: ${key.level}\nRole: <@&${key.role_id}>`));
 
     const row = new ActionRowBuilder().setComponents(b1, b2);
 
@@ -34,7 +37,7 @@ module.exports = {
       .setFooter(embed.footer)
       .setDescription('You can add or remove level roles for the bot to give out once a user reaches a certain ' +
         'level. You can only assign one role per level, and you can\'t have any repeat roles or levels. You can ' +
-        'view a list of all level roles below. If there aren\'t any that is because none have been set.');
+        `view a list of all level roles below. If there aren't any that is because none have been set.\n\n${array.join('\n')}`);
 
       // Add field for level roles
 
