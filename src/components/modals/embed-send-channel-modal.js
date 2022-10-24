@@ -33,6 +33,7 @@ module.exports = {
       newEmbed.setColor(clientMember.displayColor);
     }
     if (embed.image !== undefined) newEmbed.setImage(embed.image);
+    if (embed.fields !== undefined) newEmbed.addFields(embed.fields);
 
     await client.embedCache.delete(interaction.member.id);
 

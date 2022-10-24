@@ -8,6 +8,10 @@ module.exports = {
     .setDescription('Create an embed to send to a channel'),
   async execute(interaction, client) {
     const clientMember = await interaction.guild.members.fetch(client.user.id);
+    const { embedCache } = client;
+
+    const cachedData = embedCache.get(interaction.member.id);
+    if (cachedData) embedCache.delete(cachedData);
 
     const b1 = new ButtonBuilder()
       .setCustomId('embed-title')

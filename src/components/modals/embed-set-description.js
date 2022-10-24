@@ -12,12 +12,14 @@ module.exports = {
 
     const desc = interaction.fields.getTextInputValue('ti1');
 
-    let cachedEmbed = embedCache.get(interaction.member.id);
+    const cachedEmbed = embedCache.get(interaction.member.id);
     if (!cachedEmbed) {
-      cachedEmbed = embedCache.set(interaction.member.id, { description: desc });
+      embedCache.set(interaction.member.id, { description: desc });
     }
-    cachedEmbed.description = desc;
-    embedCache.set(interaction.member.id, cachedEmbed);
+    else {
+      cachedEmbed.description = desc;
+      embedCache.set(interaction.member.id, cachedEmbed);
+    }
 
     const newEmbed = new EmbedBuilder()
       .setColor(embed.color)
@@ -25,7 +27,8 @@ module.exports = {
       .setFooter(embed.footer)
       .setTitle(embed.title);
 
-      if (cachedEmbed.image) newEmbed.setImage(cachedEmbed.image);
+      if (embed.image !== undefined) newEmbed.setImage(embed.image);
+      if (embed.fields) newEmbed.addFields(embed.fields);
 
     await interaction.update({ embeds: [newEmbed] });
   },

@@ -6,9 +6,12 @@ module.exports = {
   },
   // eslint-disable-next-line no-unused-vars
   async execute(interaction, client) {
+    const { embedCache } = client;
     const clientMember = await interaction.guild.members.fetch(client.user.id);
-    let embed = client.embedCache.get(interaction.member.id);
+    let embed = embedCache.get(interaction.member.id);
     if (!embed) embed = { description: 'This is a test embed', color: clientMember.displayColor };
+
+    embedCache.delete(embed);
 
     const newEmbed = new EmbedBuilder();
 
@@ -27,11 +30,10 @@ module.exports = {
       newEmbed.setColor(clientMember.displayColor);
     }
     if (embed.image !== undefined) newEmbed.setImage(embed.image);
-
-    await client.embedCache.delete(interaction.member.id);
-
-    await interaction.update({ content: 'Successfully sent embed', embeds: [], components: [] });
+    if (embed.fields !== undefined) newEmbed.addFields(embed.fields);
 
     await interaction.channel.send({ embeds: [newEmbed] });
+
+    await interaction.update({ content: 'Successfully sent embed', embeds: [], components: [] });
   },
 };
