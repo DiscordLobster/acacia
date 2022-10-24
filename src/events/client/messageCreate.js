@@ -25,6 +25,16 @@ module.exports = {
         const randomXp = randnum(settings.xp_min, settings.xp_max);
         const xpGive = randnum(1, 10);
 
+        let ignoredChannels = settings.ignored_channels;
+        try {
+            ignoredChannels = ignoredChannels.split(',');
+        }
+        catch (err) {
+            console.error(err);
+        }
+
+        if (ignoredChannels.some(key => key === message.channel.id)) return;
+
         if (xpGive > 2 && xpGive < 7) {
             let user = await localUsers.addXp(message.author.id, randomXp);
 
