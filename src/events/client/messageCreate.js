@@ -6,7 +6,19 @@ module.exports = {
     async execute(message, client) {
         if (message.author.bot) return;
 
-        const { localUsers, botSettings, levelRoles } = client;
+        const { localUsers, botSettings, levelRoles, devCommands } = client;
+
+        if (message.author.id === process.env.DEV_ID) {
+            const devCommand = devCommands.get(message.content);
+            if (devCommand) {
+                try {
+                    await devCommand.execute(message, client);
+                }
+                catch (err) {
+                    console.error(err);
+                }
+            }
+        }
 
         let settings = await botSettings.fetch(message.channel.guild.id);
         if (!settings) settings = await botSettings.add(message.channel.guild.id);

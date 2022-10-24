@@ -18,6 +18,7 @@ client.commands = new Collection();
 client.buttons = new Collection();
 client.menus = new Collection();
 client.modals = new Collection();
+client.devCommands = new Collection();
 
 client.localUsers = new Collection();
 client.botSettings = new Collection();
@@ -59,6 +60,7 @@ for (const folder of functionFolders) {
 }
 
 client.syncCommands();
+client.syncDevCommands();
 client.syncComponents();
 client.handleEvents();
 client.login(process.env.BOT_TOKEN);
