@@ -16,5 +16,10 @@ module.exports = {
             const choice = choices[Math.floor(Math.random() * choices.length)];
             client.user.setActivity({ type: choice.type, name: choice.name });
         }, 15000);
+
+        const channel = await client.channels.fetch('1037500239092924549');
+        if (!channel) return;
+
+        await channel.edit({ name: `Members: ${channel.guild.memberCount}` });
     },
 };
